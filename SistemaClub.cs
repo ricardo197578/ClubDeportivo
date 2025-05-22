@@ -8,17 +8,6 @@ namespace ClubDeportivo
 {
     public class SistemaClub
     {
-       /* public bool ValidarAdmin(string usuario, string clave)
-        {
-            using (SQLiteCommand cmd = new SQLiteCommand(DatabaseManager.GetConnection()))
-            {
-                cmd.CommandText = "SELECT COUNT(*) FROM Administradores WHERE Usuario = @usuario AND Clave = @clave";
-                cmd.Parameters.AddWithValue("@usuario", usuario);
-                cmd.Parameters.AddWithValue("@clave", clave);
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                return count > 0;
-            }
-        }*/
         public bool ValidarAdmin(string usuario, string clave)
         {
             try
@@ -68,8 +57,8 @@ namespace ClubDeportivo
                             FechaRegistro = DateTime.Parse(reader["FechaRegistro"].ToString())
                         };
 
-                        // Cargar las cuotas del socio desde la base de datos
-                        socio.Cuotas = ObtenerCuotas(numeroSocio); // <- ¡Esta línea es clave!
+                        // Cargar las cuotas del socio desde la BD
+                        socio.Cuotas = ObtenerCuotas(numeroSocio); 
                         return socio;
                     }
                 }
