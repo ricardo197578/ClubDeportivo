@@ -8,31 +8,43 @@ namespace ClubDeportivo
 public class FrmDatosSocio : Form
 {
     private Socio socio;
+        private Button btnCerrarSesion;
 
-    public FrmDatosSocio(Socio socioActual)
+
+        public FrmDatosSocio(Socio socioActual)
     {
         this.socio = socioActual;
         InitializeComponent();
         MostrarDatos();
+        
     }
 
     private void InitializeComponent()
     {
         this.Text = "Mis Datos - Club Deportivo";
-        this.Width = 350;
-        this.Height = 350;
+            this.Size = new Size(350, 400);
+            this.StartPosition = FormStartPosition.CenterScreen;
 
-        Button btnVolver = new Button();
-        btnVolver.Text = "Volver";
-        btnVolver.Location = new Point(120, 220);
-        btnVolver.Click += (s, e) => this.Close();
-        this.Controls.Add(btnVolver);
 
             Button btnPagarCuota = new Button();
             btnPagarCuota.Text = "Pagar Cuota";
             btnPagarCuota.Location = new Point(120, 250);
             btnPagarCuota.Click += (s, e) => new FrmPagarCuota(socio).ShowDialog();
             this.Controls.Add(btnPagarCuota);
+
+            btnCerrarSesion = new Button();
+            btnCerrarSesion.Text = "Cerrar sesión";
+            btnCerrarSesion.Size = new Size(130, 30);
+            btnCerrarSesion.Location = new Point(120, 280);
+            btnCerrarSesion.Click += (sender, e) =>
+            {
+                DialogResult confirm = MessageBox.Show("¿Estás seguro de que querés cerrar sesión?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm == DialogResult.Yes)
+                {
+                    Application.Restart(); // Reinicia toda la aplicación
+                }
+            };
+            this.Controls.Add(btnCerrarSesion);
 
 
 

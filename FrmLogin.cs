@@ -4,152 +4,125 @@ using System.Drawing;
 
 namespace ClubDeportivo
 {
-public class FrmLogin : Form
-{
-    private SistemaClub sistema;
-    private TextBox txtUsuario;
-    private TextBox txtClave;
-    private Button btnIngresar;
-    private RadioButton rbAdmin;
-    private RadioButton rbSocio;
-
-    public FrmLogin(SistemaClub sistemaClub)
+    public class FrmLogin : Form
     {
-        this.sistema = sistemaClub;
+        private SistemaClub sistema;
+        private TextBox txtUsuario;
+        private TextBox txtClave;
+        private Button btnIngresar;
+        private ComboBox cmbRol;
+
+        public FrmLogin(SistemaClub sistemaClub)
+        {
+            this.sistema = sistemaClub;
             Console.WriteLine("FrmLogin ha sido instanciado correctamente.");
             InitializeComponent();
-    }
+        }
 
-    private void InitializeComponent()
-    {
-        this.Text = "Login - Club Deportivo";
-        this.Width = 300;
-        this.Height = 250;
+        private void InitializeComponent()
+        {
+            this.Text = "Login - Club Deportivo";
+            this.Size = new Size(350, 250);
+            this.StartPosition = FormStartPosition.CenterScreen;
 
-        // RadioButtons para selección de tipo de usuario
-        rbAdmin = new RadioButton();
-        rbAdmin.Text = "Administrador";
-        rbAdmin.Location = new System.Drawing.Point(20, 20);
-        rbAdmin.Checked = true;
-        this.Controls.Add(rbAdmin);
 
-        rbSocio = new RadioButton();
-        rbSocio.Text = "Socio";
-        rbSocio.Location = new System.Drawing.Point(20, 50);
-        this.Controls.Add(rbSocio);
+            // ComboBox para selección de tipo de usuario
+            Label lblRol = new Label();
+            lblRol.Text = "Rol:";
+            lblRol.Location = new Point(20, 20);
+            this.Controls.Add(lblRol);
 
-        // Campos de texto
-        Label lblUsuario = new Label();
-        lblUsuario.Text = "Usuario/N° Socio:";
-        lblUsuario.Location = new System.Drawing.Point(20, 80);
-        this.Controls.Add(lblUsuario);
+            cmbRol = new ComboBox();
+            cmbRol.Location = new Point(120, 20);
+            cmbRol.Width = 150;
+            cmbRol.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbRol.Items.Add("Administrador");
+            cmbRol.Items.Add("Socio");
+            cmbRol.SelectedIndex = 0; // Por defecto: Administrador
+            cmbRol.SelectedIndexChanged += (s, e) =>
+            {
+                txtClave.Enabled = true;
+                //txtClave.Enabled = cmbRol.SelectedItem.ToString() == "Administrador";
+            };
+            this.Controls.Add(cmbRol);
 
-        txtUsuario = new TextBox();
-        txtUsuario.Location = new System.Drawing.Point(120, 80);
-        txtUsuario.Width = 150;
-        this.Controls.Add(txtUsuario);
+            // Usuario
+            Label lblUsuario = new Label();
+            lblUsuario.Text = "Usuario/N° Socio:";
+            lblUsuario.Location = new Point(20, 60);
+            this.Controls.Add(lblUsuario);
 
-        Label lblClave = new Label();
-        lblClave.Text = "Clave:";
-        lblClave.Location = new System.Drawing.Point(20, 110);
-        this.Controls.Add(lblClave);
+            txtUsuario = new TextBox();
+            txtUsuario.Location = new Point(120, 60);
+            txtUsuario.Width = 150;
+            this.Controls.Add(txtUsuario);
 
-        txtClave = new TextBox();
-        txtClave.Location = new System.Drawing.Point(120, 110);
-        txtClave.Width = 150;
-        txtClave.PasswordChar = '*';
-        txtClave.Enabled = false; // Solo habilitado para admin
-        this.Controls.Add(txtClave);
+            // Clave
+            Label lblClave = new Label();
+            lblClave.Text = "Clave:";
+            lblClave.Location = new Point(20, 90);
+            this.Controls.Add(lblClave);
 
-        // Botón Ingresar
-        btnIngresar = new Button();
-        btnIngresar.Text = "Ingresar";
-        btnIngresar.Location = new System.Drawing.Point(120, 150);
-        btnIngresar.Click += new EventHandler(btnIngresar_Click);
-        this.Controls.Add(btnIngresar);
+            txtClave = new TextBox();
+            txtClave.Location = new Point(120, 90);
+            txtClave.Width = 150;
+            txtClave.PasswordChar = '*';
+            txtClave.Enabled = true; // Para admin por defecto
+            this.Controls.Add(txtClave);
 
-        // Eventos para RadioButtons
-        rbAdmin.CheckedChanged += (s, e) => txtClave.Enabled = rbAdmin.Checked;
-        rbSocio.CheckedChanged += (s, e) => txtClave.Enabled = !rbSocio.Checked;
+            // Botón Ingresar
+            btnIngresar = new Button();
+            btnIngresar.Text = "Ingresar";
+            btnIngresar.Location = new Point(120, 130);
+            btnIngresar.Click += new EventHandler(btnIngresar_Click);
+            this.Controls.Add(btnIngresar);
+        }
 
-    }
+        
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            if (rbAdmin.Checked)
+            try
             {
-                if (sistema.ValidarAdmin(txtUsuario.Text, txtClave.Text))
+                string rolSeleccionado = cmbRol.SelectedItem.ToString();
+
+                if (rolSeleccionado == "Administrador")
                 {
-                    MessageBox.Show("Acceso concedido como Administrador");
-                    this.Hide();
-                    new FrmAdmin(sistema).Show();
+                    if (sistema.ValidarAdmin(txtUsuario.Text.Trim(), txtClave.Text.Trim()))
+                    {
+                        MessageBox.Show("Acceso concedido como Administrador");
+                        this.Hide();
+                        new FrmAdmin(sistema).Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Credenciales incorrectas.");
+                    }
                 }
-                else
+                else if (rolSeleccionado == "Socio")
                 {
-                    MessageBox.Show("Credenciales incorrectas");
-                }
-            }
-            else
-            {
-                int numeroSocio;
-                if (int.TryParse(txtUsuario.Text, out numeroSocio))
-                {
-                    Socio socio = sistema.ValidarSocio(numeroSocio);
+                    Socio socio = sistema.ValidarSocio(txtUsuario.Text.Trim(), txtClave.Text.Trim());
                     if (socio != null)
                     {
-                        // Primero muestra los datos del socio
                         FrmDatosSocio frmDatos = new FrmDatosSocio(socio);
                         DialogResult result = frmDatos.ShowDialog();
 
-                        // Solo abre el pago si el usuario lo solicita (ej: con un botón)
-                        if (result == DialogResult.OK) // Asumiendo que lo cierras con this.DialogResult=DialogResult.OK
+                        if (result == DialogResult.OK)
                         {
                             this.Hide();
                             new FrmPagarCuota(socio).Show();
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("Usuario o clave incorrectos.");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error en el inicio de sesión: " + ex.Message);
+            }
         }
-       
 
-        /* private void btnIngresar_Click(object sender, EventArgs e)
-         {
-             if (rbAdmin.Checked)
-             {
-                 if (sistema.ValidarAdmin(txtUsuario.Text, txtClave.Text))
-                 {
-                     MessageBox.Show("Acceso concedido como Administrador");
-                     this.Hide();
-                     new FrmAdmin(sistema).Show();
-                 }
-                 else
-                 {
-                     MessageBox.Show("Credenciales incorrectas");
-                 }
-             }
-             else
-             {
-                 int numeroSocio;
-                 if (int.TryParse(txtUsuario.Text, out numeroSocio))
-                 {
-                     Socio socio = sistema.ValidarSocio(numeroSocio);
-                     if (socio != null)
-                     {
-                         MessageBox.Show(string.Format("Bienvenido, Socio {0}", socio.Nombre));
-                         this.Hide();
-                         new FrmDatosSocio(socio).Show();
-                     }
-                     else
-                     {
-                         MessageBox.Show("Número de socio no válido");
-                     }
-                 }
-                 else
-                 {
-                     MessageBox.Show("Ingrese un número de socio válido");
-                 }
-             }
-
-             }*/
     }
 }

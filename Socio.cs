@@ -11,14 +11,18 @@ namespace ClubDeportivo
         public int NumeroSocio { get; set; }
         public DateTime FechaRegistro { get; set; }
         public List<Cuota> Cuotas { get; set; }//agregado
+        public string Usuario { get; set; }
+        public string Clave { get; set; }
 
 
-        public Socio(string nombre, string apellido, string dni, int numeroSocio)
+        public Socio(string nombre, string apellido, string dni, int numeroSocio, string usuario,string clave)
             : base(nombre, apellido, dni)
         {
             NumeroSocio = numeroSocio;
             FechaRegistro = DateTime.Now;
             Cuotas = new List<Cuota>();//inicializacion agregdo
+            Usuario = usuario;
+            Clave = clave;
         }
     
 

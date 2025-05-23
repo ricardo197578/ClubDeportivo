@@ -21,10 +21,10 @@ public class FrmListarNoSocios : Form
     private void InitializeComponent()
     {
         this.Text = "Listado de No Socios";
-        this.Width = 400;
-        this.Height = 300;
+            this.Size = new Size(400, 300);
+            this.StartPosition = FormStartPosition.CenterScreen;
 
-        txtLista = new TextBox();
+            txtLista = new TextBox();
         txtLista.Multiline = true;
         txtLista.ScrollBars = ScrollBars.Vertical;
         txtLista.Location = new Point(20, 20);

@@ -1,5 +1,7 @@
 using System;
 using System.Windows.Forms;
+using System.Text;
+using System.Drawing;
 
 namespace ClubDeportivo
 {
@@ -23,11 +25,11 @@ public class FrmRegistroNoSocio : Form
     {
         // Configuración básica del formulario
         this.Text = "Registro de No Socios";
-        this.Width = 300;
-        this.Height = 250;
+            this.Size = new Size(400, 300);
+            this.StartPosition = FormStartPosition.CenterScreen;
 
-        // Label y TextBox para Nombre
-        Label lblNombre = new Label();
+            // Label y TextBox para Nombre
+            Label lblNombre = new Label();
         lblNombre.Text = "Nombre:";
         lblNombre.Location = new System.Drawing.Point(20, 20);
         this.Controls.Add(lblNombre);

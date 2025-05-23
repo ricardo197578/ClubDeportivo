@@ -8,7 +8,11 @@ namespace ClubDeportivo
 {
     public class SistemaClub
     {
+<<<<<<< HEAD
         public bool ValidarAdmin(string usuario, string clave)
+=======
+       public bool ValidarAdmin(string usuario, string clave)
+>>>>>>> eb1b066 (mejoras login)
         {
             try
             {
@@ -32,39 +36,63 @@ namespace ClubDeportivo
             }
         }
 
-        public Socio ValidarSocio(int numeroSocio)
+      
+        public Socio ValidarSocio(string usuario, string clave)
         {
-            using (SQLiteCommand cmd = new SQLiteCommand(DatabaseManager.GetConnection()))
+            try
             {
-                cmd.CommandText = @"
-            SELECT p.Nombre, p.Apellido, p.Dni, s.NumeroSocio, s.FechaRegistro 
+                using (SQLiteCommand cmd = new SQLiteCommand(DatabaseManager.GetConnection()))
+                {
+                    cmd.CommandText = @"
+            SELECT p.Nombre, p.Apellido, p.Dni, s.NumeroSocio, s.FechaRegistro, s.Usuario, s.Clave
             FROM Socios s 
             JOIN Personas p ON s.PersonaId = p.Id 
-            WHERE s.NumeroSocio = @numero";
-                cmd.Parameters.AddWithValue("@numero", numeroSocio);
+            WHERE s.Usuario = @usuario AND s.Clave = @clave";
 
-                using (SQLiteDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
+                    cmd.Parameters.AddWithValue("@usuario", usuario.Trim());
+                    cmd.Parameters.AddWithValue("@clave", clave.Trim());
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        Socio socio = new Socio(
-                            reader["Nombre"].ToString(),
-                            reader["Apellido"].ToString(),
-                            reader["Dni"].ToString(),
-                            Convert.ToInt32(reader["NumeroSocio"])
-                        )
+                        if (reader.Read())
                         {
-                            FechaRegistro = DateTime.Parse(reader["FechaRegistro"].ToString())
-                        };
+                            Socio socio = new Socio(
+                                reader["Nombre"].ToString(),
+                                reader["Apellido"].ToString(),
+                                reader["Dni"].ToString(),
+                                Convert.ToInt32(reader["NumeroSocio"]),
+                                reader["Usuario"].ToString(),
+                                reader["Clave"].ToString()
+                            )
+                            {
+                                FechaRegistro = DateTime.Parse(reader["FechaRegistro"].ToString())
+                            };
 
+<<<<<<< HEAD
                         // Cargar las cuotas del socio desde la BD
                         socio.Cuotas = ObtenerCuotas(numeroSocio); 
                         return socio;
+=======
+                            socio.Cuotas = ObtenerCuotas(socio.NumeroSocio); // Recuperar cuotas del socio
+                            return socio;
+                        }
+                        else
+                        {
+                            Console.WriteLine("No se encontró el socio con esas credenciales.");
+                        }
+>>>>>>> eb1b066 (mejoras login)
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al validar el socio: " + ex.Message);
+            }
+
             return null;
         }
+
+
 
         public void RegistrarSocio(Socio socio)
         {
@@ -89,11 +117,13 @@ namespace ClubDeportivo
 
                         // Insertar en Socios
                         cmd.CommandText = @"
-                            INSERT INTO Socios (PersonaId, NumeroSocio, FechaRegistro) 
-                            VALUES (@id, @numero, @fecha)";
+                            INSERT INTO Socios (PersonaId, NumeroSocio, FechaRegistro,Usuario,Clave) 
+                            VALUES (@id, @numero, @fecha, @usuario, @clave)";
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@numero", socio.NumeroSocio);
                         cmd.Parameters.AddWithValue("@fecha", socio.FechaRegistro.ToString("yyyy-MM-dd"));
+                        cmd.Parameters.AddWithValue("@usuario", socio.Usuario);
+                        cmd.Parameters.AddWithValue("@clave", socio.Clave);
                         cmd.ExecuteNonQuery();
                     }
                     transaction.Commit();

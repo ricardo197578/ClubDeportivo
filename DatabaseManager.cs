@@ -40,6 +40,8 @@ namespace ClubDeportivo
                     PersonaId INTEGER PRIMARY KEY,
                     NumeroSocio INTEGER UNIQUE NOT NULL,
                     FechaRegistro TEXT NOT NULL,
+                    Usuario TEXT UNIQUE NOT NULL,
+                    Clave TEXT NOT NULL,
                     FOREIGN KEY (PersonaId) REFERENCES Personas(Id)
                 )";
                 cmd.ExecuteNonQuery();
