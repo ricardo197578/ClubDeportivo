@@ -25,6 +25,9 @@ namespace ClubDeportivo
             this.Height = 300;
 
             listViewCuotas = new ListView();
+            listViewCuotas.FullRowSelect = true;
+            listViewCuotas.MultiSelect = false;
+
             listViewCuotas.View = View.Details;
             listViewCuotas.Columns.Add("ID", 50);
             listViewCuotas.Columns.Add("Fecha", 100);

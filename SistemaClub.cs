@@ -8,11 +8,9 @@ namespace ClubDeportivo
 {
     public class SistemaClub
     {
-<<<<<<< HEAD
-        public bool ValidarAdmin(string usuario, string clave)
-=======
+
        public bool ValidarAdmin(string usuario, string clave)
->>>>>>> eb1b066 (mejoras login)
+
         {
             try
             {
@@ -68,11 +66,11 @@ namespace ClubDeportivo
                                 FechaRegistro = DateTime.Parse(reader["FechaRegistro"].ToString())
                             };
 
-<<<<<<< HEAD
+
                         // Cargar las cuotas del socio desde la BD
-                        socio.Cuotas = ObtenerCuotas(numeroSocio); 
-                        return socio;
-=======
+                        //socio.Cuotas = ObtenerCuotas(numeroSocio); 
+                        //return socio;
+
                             socio.Cuotas = ObtenerCuotas(socio.NumeroSocio); // Recuperar cuotas del socio
                             return socio;
                         }
@@ -80,7 +78,6 @@ namespace ClubDeportivo
                         {
                             Console.WriteLine("No se encontró el socio con esas credenciales.");
                         }
->>>>>>> eb1b066 (mejoras login)
                     }
                 }
             }
@@ -96,6 +93,7 @@ namespace ClubDeportivo
 
         public void RegistrarSocio(Socio socio)
         {
+            // 1. Guardar en base de datos (persistencia permanente)
             using (SQLiteTransaction transaction = DatabaseManager.GetConnection().BeginTransaction())
             {
                 try
