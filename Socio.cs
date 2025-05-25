@@ -27,7 +27,7 @@ namespace ClubDeportivo
     
 
         //metodo pagar cuota
-        public void PagarCuota(int cuotaId)
+        /*public void PagarCuota(int cuotaId)
         {
             using (var conn = DatabaseManager.GetConnection())
             using (var cmd = new SQLiteCommand(conn))
@@ -48,7 +48,7 @@ namespace ClubDeportivo
                         cuotaPagada.Pagado = true;
                 }
             }
-        }
+        }*/
         //calcular cuota
         public int CalcularCuotasAdeudadas()
         {
@@ -56,7 +56,26 @@ namespace ClubDeportivo
             int mesesAdeudados = ((hoy.Year - FechaRegistro.Year) * 12) + hoy.Month - FechaRegistro.Month;
             return mesesAdeudados;
         }
+        public void PagarCuota(int cuotaId)
+        {
+            using (var connection = DatabaseManager.GetNewConnection())
+            {
+                using (var cmd = new SQLiteCommand(connection))
+                {
+                    cmd.CommandText = "UPDATE Cuotas SET Pagado = 1 WHERE Id = @id AND NumeroSocio = @numeroSocio";
+                    cmd.Parameters.AddWithValue("@id", cuotaId);
+                    cmd.Parameters.AddWithValue("@numeroSocio", this.NumeroSocio);
+                    cmd.ExecuteNonQuery();
+                }
+            }
 
+            // Actualizar también en memoria
+            var cuota = this.Cuotas.Find(c => c.Id == cuotaId);
+            if (cuota != null)
+            {
+                cuota.Pagado = true;
+            }
+        }
 
     }
 }

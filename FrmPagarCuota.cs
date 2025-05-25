@@ -45,20 +45,7 @@ namespace ClubDeportivo
             this.Controls.Add(btnMarcarPagado);
         }
 
-        /* private void MostrarCuotasPendientes()
-         {
-             listViewCuotas.Items.Clear();
-             List<Cuota> cuotasPendientes = socio.Cuotas.FindAll(c => !c.Pagado);
-
-             foreach (Cuota cuota in cuotasPendientes)
-             {
-                 ListViewItem item = new ListViewItem(cuota.Id.ToString());
-                 item.SubItems.Add(cuota.FechaPago.ToShortDateString());
-                 item.SubItems.Add(cuota.Monto.ToString("C"));
-                 item.SubItems.Add(cuota.Pagado ? "Sí" : "No");
-                 listViewCuotas.Items.Add(item);
-             }
-         }*/
+        
         private void MostrarCuotasPendientes()
         {
             listViewCuotas.Items.Clear();
@@ -75,7 +62,7 @@ namespace ClubDeportivo
                 listViewCuotas.Items.Add(item);
             }
         }
-        private void BtnMarcarPagado_Click(object sender, EventArgs e)
+        /*private void BtnMarcarPagado_Click(object sender, EventArgs e)
         {
             if (listViewCuotas.SelectedItems.Count > 0)
             {
@@ -86,6 +73,31 @@ namespace ClubDeportivo
             else
             {
                 MessageBox.Show("Seleccione una cuota para marcarla como pagada.");
+            }
+        }*/
+        private void BtnMarcarPagado_Click(object sender, EventArgs e)
+        {
+            if (listViewCuotas.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Seleccione una cuota para marcarla como pagada.");
+                return;
+            }
+
+            try
+            {
+                int cuotaId = Convert.ToInt32(listViewCuotas.SelectedItems[0].Text);
+
+                // Marcar como pagado en BD y memoria
+                socio.PagarCuota(cuotaId);
+
+                // Actualizar la vista
+                MostrarCuotasPendientes();
+
+                MessageBox.Show("Cuota marcada como pagada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Error al marcar la cuota como pagada: {ex.Message}"));
             }
         }
     }

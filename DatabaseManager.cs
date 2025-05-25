@@ -26,13 +26,18 @@ namespace ClubDeportivo
                 return _connection;
             }
         }
-
         public static SQLiteConnection GetNewConnection()
+        {
+            var connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", databasePath));
+            connection.Open();
+            return connection;
+        }
+        /*public static SQLiteConnection GetNewConnection()
         {
             var newConnection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", databasePath));
             newConnection.Open();
             return newConnection;
-        }
+        }*/
 
         private static void InitializeDatabase()
         {
