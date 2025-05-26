@@ -10,7 +10,15 @@ namespace ClubDeportivo
 		public decimal Monto {get;set;}
 		public bool Pagado {get;set;}
 
-		public Cuota(int id , int numeroSocio,DateTime fechaPago,decimal monto,bool pagado)
+        /*
+		
+        falta implementar???
+        public DateTime FechaVencimiento { get; set; }???
+        public MetodoPago MetodoPago { get; set; }???
+        
+         
+		 */
+        public Cuota(int id , int numeroSocio,DateTime fechaPago,decimal monto,bool pagado)
 		{
 			Id = id;
 			NumeroSocio = numeroSocio;

@@ -8,8 +8,15 @@ namespace ClubDeportivo
 {
     public class SistemaClub
     {
+        /*FALTA IMPLEMENTAR
+        public List<Socio> Socios { get; set; }
+        public List<NoSocio> NoSocios { get; set; }
+        public List<Profesor> Profesores { get; set; }
+        public List<Actividad> Actividades { get; set; }
+         List<Cuota> cuotas {getd;set;;} esta implemntado pero en el metodo
+        */
 
-       public bool ValidarAdmin(string usuario, string clave)
+        public bool ValidarAdmin(string usuario, string clave)
 
         {
             try
@@ -68,8 +75,7 @@ namespace ClubDeportivo
 
 
                         // Cargar las cuotas del socio desde la BD
-                        //socio.Cuotas = ObtenerCuotas(numeroSocio); 
-                        //return socio;
+                      
 
                             socio.Cuotas = ObtenerCuotas(socio.NumeroSocio); // Recuperar cuotas del socio
                             return socio;

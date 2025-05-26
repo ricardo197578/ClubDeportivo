@@ -10,7 +10,7 @@ namespace ClubDeportivo
         [STAThread]
         static void Main()
         {
-            // Crear admin por defecto si no existe
+            // Crear admin por defecto si no existe 
             using (SQLiteCommand cmd = new SQLiteCommand(DatabaseManager.GetConnection()))
             {
                 cmd.CommandText = "SELECT COUNT(*) FROM Administradores";

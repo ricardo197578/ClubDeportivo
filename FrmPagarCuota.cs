@@ -62,19 +62,7 @@ namespace ClubDeportivo
                 listViewCuotas.Items.Add(item);
             }
         }
-        /*private void BtnMarcarPagado_Click(object sender, EventArgs e)
-        {
-            if (listViewCuotas.SelectedItems.Count > 0)
-            {
-                int cuotaId = Convert.ToInt32(listViewCuotas.SelectedItems[0].Text);
-                socio.PagarCuota(cuotaId);
-                MostrarCuotasPendientes();
-            }
-            else
-            {
-                MessageBox.Show("Seleccione una cuota para marcarla como pagada.");
-            }
-        }*/
+       
         private void BtnMarcarPagado_Click(object sender, EventArgs e)
         {
             if (listViewCuotas.SelectedItems.Count == 0)
@@ -87,7 +75,7 @@ namespace ClubDeportivo
             {
                 int cuotaId = Convert.ToInt32(listViewCuotas.SelectedItems[0].Text);
 
-                // Marcar como pagado en BD y memoria
+                // Marcar como pagado en BD y memoria sino da error objeto desechado
                 socio.PagarCuota(cuotaId);
 
                 // Actualizar la vista

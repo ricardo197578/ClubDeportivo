@@ -62,7 +62,7 @@ namespace ClubDeportivo
                 )";
                 cmd.ExecuteNonQuery();
 
-                // Tabla Socios
+                // Tabla No Socios
                 cmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS NoSocios (
                     PersonaId INTEGER PRIMARY KEY,

@@ -13,7 +13,15 @@ namespace ClubDeportivo
         public List<Cuota> Cuotas { get; set; }//agregado
         public string Usuario { get; set; }
         public string Clave { get; set; }
-
+        /*
+        
+        FALTA IMPLEMENTAR
+        public AptoFisico AptFisico { get; set; }
+        public bool EstadoActivo { get; set; }
+        public List<Cuota> HistorialCuotas { get; set; }
+        public List<Actividad> ActividadesInscritas { get; set; }
+        public Carnet Carnet { get; set; }
+         */
 
         public Socio(string nombre, string apellido, string dni, int numeroSocio, string usuario,string clave)
             : base(nombre, apellido, dni)
@@ -26,29 +34,7 @@ namespace ClubDeportivo
         }
     
 
-        //metodo pagar cuota
-        /*public void PagarCuota(int cuotaId)
-        {
-            using (var conn = DatabaseManager.GetConnection())
-            using (var cmd = new SQLiteCommand(conn))
-            {
-                cmd.CommandText = @"
-            UPDATE Cuotas 
-            SET Pagado = 1 
-            WHERE Id = @cuotaId AND NumeroSocio = @numeroSocio";
-                cmd.Parameters.AddWithValue("@cuotaId", cuotaId);
-                cmd.Parameters.AddWithValue("@numeroSocio", this.NumeroSocio);
-
-                int filasAfectadas = cmd.ExecuteNonQuery();
-
-                if (filasAfectadas > 0)
-                {
-                    Cuota cuotaPagada = Cuotas.Find(c => c.Id == cuotaId);
-                    if (cuotaPagada != null)
-                        cuotaPagada.Pagado = true;
-                }
-            }
-        }*/
+       
         //calcular cuota
         public int CalcularCuotasAdeudadas()
         {

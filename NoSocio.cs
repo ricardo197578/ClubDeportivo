@@ -6,8 +6,12 @@ namespace ClubDeportivo
 	{
 		public int NumeroNoSocio { get; set; }
 		public DateTime FechaRegistro { get; set; }
+        /*
+		 FALTA IMPLEMENTAR
+        public List<Actividad> Actividades { get; set; }
 
-		public NoSocio(string nombre, string apellido, string dni, int numeroNoSocio)
+		*/
+        public NoSocio(string nombre, string apellido, string dni, int numeroNoSocio)
 			: base(nombre, apellido, dni)
 		{
 			NumeroNoSocio = numeroNoSocio;
